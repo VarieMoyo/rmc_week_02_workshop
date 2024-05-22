@@ -11,6 +11,53 @@ data_ncd <- read_csv(here("data", "burden-of-disease-ncd.csv"))
 ## Table of Estimates for NCD Burden Over Time
 
 ```{r}
+
+library(ggplot2)
+
+# Data for Mozambique
+mozambique_data <- data.frame(
+  Entity = "Mozambique",
+  Year = 2004:2019,
+  DALY = c(
+    22801.82, 23115.28, 23610.38, 23892.64, 24261.65, 24466.66, 24734.84, 24874.33, 25089.74, 25175.16, 
+    25121.70, 24996.46, 24758.85, 24569.82, 24405.91, 24334.45
+  )
+)
+
+# Data for Myanmar
+myanmar_data <- data.frame(
+  Entity = "Myanmar",
+  Year = 1990:2019,
+  DALY = c(
+    34950.44, 34941.53, 34821.72, 34677.29, 34469.35, 34274.65, 34041.93, 33790.91, 33565.93, 33278.11, 
+    33070.75, 32799.96, 32478.41, 32136.29, 31923.10, 31394.14, 30890.49, 30159.13, 29542.14, 29033.55, 
+    28410.35, 27989.46, 27426.50, 27202.88, 26915.27, 26644.10, 26454.95, 26259.75, 26057.49, 25830.84
+  )
+)
+
+# Data for Namibia
+namibia_data <- data.frame(
+  Entity = "Namibia",
+  Year = 1990:2019,
+  DALY = c(
+    24637.88, 24523.45, 24536.78, 24460.85, 24619.53, 24744.09, 24816.28, 25031.33, 25446.56, 25954.55, 
+    26500.26, 26333.39, 26582.89, 26464.44, 26054.82, 25614.82, 24943.43, 24384.56, 23913.55, 23595.10, 
+    23383.49, 22940.43, 22743.13, 22710.46, 22753.82, 22781.16, 22750.78, 22678.63, 22636.11, 22518.33
+  )
+)
+
+# Combine data
+combined_data <- rbind(mozambique_data, myanmar_data, namibia_data)
+
+# Create the plot
+p <- ggplot(combined_data, aes(x = Year, y = DALY, color = Entity)) +
+  geom_line() +
+  labs(title = "Trend of DALY Burden Over Time",
+       x = "Year",
+       y = "DALY Burden",
+       color = "Country") +
+  theme_minimal()
+
 # Here render a table for the DALY burden over time for the three countries 
 # You should pivot the data to show each country in a separate column.
 # Use kable() from the knitr package to render the table.
@@ -19,11 +66,128 @@ data_ncd <- read_csv(here("data", "burden-of-disease-ncd.csv"))
 ## Plot Showing Trends in NCD Burden Over Time 
 
 ```{r}
-# Here, plot a line graph showing the trend of DALY burden for the chosen countries over time. You can use ggplot2 to create this plot. Each country's line should be a different color.
+library(ggplot2)
+library(tidyr)  # For pivot_longer
+
+# Data for Mozambique (assuming data_mozambique is your data frame)
+data_mozambique <- data.frame(
+  Year = 2004:2019,
+  DALY = c(
+    22801.82, 23115.28, 23610.38, 23892.64, 24261.65, 24466.66, 24734.84, 24874.33, 25089.74, 25175.16, 
+    25121.70, 24996.46, 24758.85, 24569.82, 24405.91, 24334.45
+  )
+)
+
+# Convert Mozambique data to long format
+mozambique_long <- pivot_longer(data_mozambique, cols = -Year, names_to = "Country", values_to = "DALY")
+
+# Plot for Mozambique
+ggplot(mozambique_long, aes(x = Year, y = DALY, group = 1)) +
+  geom_line() +
+  labs(title = "Trend of DALY Burden in Mozambique Over Time",
+       x = "Year",
+       y = "DALY Burden") +
+  theme_minimal()
+
+
+
+# Provided data for Namibia (assuming data_namibia is your data frame)
+data_namibia <- data.frame(
+  Year = 1990:2019,
+  DALY = c(
+    24637.88, 24523.45, 24536.78, 24460.85, 24619.53, 24744.09, 24816.28, 25031.33, 25446.56, 25954.55, 
+    26500.26, 26333.39, 26582.89, 26464.44, 26054.82, 25614.82, 24943.43, 24384.56, 23913.55, 23595.10, 
+    23383.49, 22940.43, 22743.13, 22710.46, 22753.82, 22781.16, 22750.78, 22678.63, 22636.11, 22518.33
+  )
+)
+
+# Convert Namibia data to long format
+namibia_long <- pivot_longer(data_namibia, cols = -Year, names_to = "Country", values_to = "DALY")
+
+# Plot for Namibia
+ggplot(namibia_long, aes(x = Year, y = DALY, group = 1)) +
+  geom_line() +
+  labs(title = "Trend of DALY Burden in Namibia Over Time",
+       x = "Year",
+       y = "DALY Burden") +
+  theme_minimal()
+
+
+# Provided data for Myanmar (assuming data_myanmar is your data frame)
+data_myanmar <- data.frame(
+  Year = 1990:2019,
+  DALY = c(
+    34950.44, 34941.53, 34821.72, 34677.29, 34469.35, 34274.65, 34041.93, 33790.91, 33565.93, 33278.11, 
+    33070.75, 32799.96, 32478.41, 32136.29, 31923.10, 31394.14, 30890.49, 30159.13, 29542.14, 29033.55, 
+    28410.35, 27989.46, 27426.50, 27202.88, 26915.27, 26644.10, 26454.95, 26259.75, 26057.49, 25830.84
+  )
+)
+
+# Convert Myanmar data to long format
+myanmar_long <- pivot_longer(data_myanmar, cols = -Year, names_to = "Country", values_to = "DALY")
+
+# Plot for Myanmar
+ggplot(myanmar_long, aes(x = Year, y = DALY, group = 1)) +
+  geom_line() +
+  labs(title = "Trend of DALY Burden in Myanmar Over Time",
+       x = "Year",
+       y = "DALY Burden") +
+  theme_minimal()
+
 ```
+
+```{r}
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+
+# Provided data for Mozambique, Myanmar, and Namibia
+data_mozambique <- data.frame(
+  Year = 2004:2019,
+  DALY = c(
+    22801.82, 23115.28, 23610.38, 23892.64, 24261.65, 24466.66, 24734.84, 24874.33, 25089.74, 25175.16, 
+    25121.70, 24996.46, 24758.85, 24569.82, 24405.91, 24334.45
+  ),
+  Country = "Mozambique"
+)
+
+data_myanmar <- data.frame(
+  Year = 1990:2019,
+  DALY = c(
+    34950.44, 34941.53, 34821.72, 34677.29, 34469.35, 34274.65, 34041.93, 33790.91, 33565.93, 33278.11, 
+    33070.75, 32799.96, 32478.41, 32136.29, 31923.10, 31394.14, 30890.49, 30159.13, 29542.14, 29033.55, 
+    28410.35, 27989.46, 27426.50, 27202.88, 26915.27, 26644.10, 26454.95, 26259.75, 26057.49, 25830.84
+  ),
+  Country = "Myanmar"
+)
+
+data_namibia <- data.frame(
+  Year = 1990:2019,
+  DALY = c(
+    24637.88, 24523.45, 24536.78, 24460.85, 24619.53, 24744.09, 24816.28, 25031.33, 25446.56, 25954.55, 
+    26500.26, 26333.39, 26582.89, 26464.44, 26054.82, 25614.82, 24943.43, 24384.56, 23913.55, 23595.10, 
+    23383.49, 22940.43, 22743.13, 22710.46, 22753.82, 22781.16, 22750.78, 22678.63, 22636.11, 22518.33
+  ),
+  Country = "Namibia"
+)
+
+# Combine data for Mozambique, Myanmar, and Namibia
+combined_data <- bind_rows(data_mozambique, data_myanmar, data_namibia)
+
+# Plot combined data
+ggplot(combined_data, aes(x = Year, y = DALY, color = Country, group = Country)) +
+  geom_line() +
+  labs(title = "Trend of DALY Burden Over Time",
+       x = "Year",
+       y = "DALY Burden",
+       color = "Country") +
+  theme_minimal()
+
+```
+
+
 
 ## Summary of NCD Burden Findings
 
-Provide a brief analysis based on the data presented in the table and chart. Highlight any significant findings or patterns. About 3 sentences.
-
+The analysis reveals distinct trends in the NCD burden among Mozambique, Myanmar, and Namibia over time. Mozambique shows a generally increasing trend in DALY burden from 2004 onwards, while Myanmar exhibits a fluctuating pattern with a slight overall decline. In contrast, Namibia demonstrates a relatively stable trend in DALY burden over the observed period. These differences suggest varying levels of success in addressing NCDs and underscore the importance of tailored interventions in each country.
 
